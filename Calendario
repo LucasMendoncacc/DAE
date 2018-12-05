@@ -1,0 +1,594 @@
+function BNovoRegistro() {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial")
+  spreadsheet.getRange('B1:G1').activate()
+  .mergeAcross();
+  spreadsheet.getCurrentCell().setValue('Registro de Atendimento DAE/PROAES');
+  spreadsheet.getActiveRangeList().setHorizontalAlignment('center')
+  .setFontSize(14)
+  .setFontSize(18);
+  spreadsheet.getRange('A3').activate();
+  spreadsheet.getCurrentCell().setValue('Nome do Estudante :');
+  spreadsheet.getRange('A4:E4').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A5').activate();
+  spreadsheet.getCurrentCell().setValue('Curso do Estudante:');
+  spreadsheet.getRange('A6:F6').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A7').activate();
+  spreadsheet.getCurrentCell().setValue('CPF:');
+  spreadsheet.getRange('A8:B8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D7').activate();
+  spreadsheet.getCurrentCell().setValue('Número de Telefone:');
+  spreadsheet.getRange('D8:E8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('G7').activate();
+  spreadsheet.getCurrentCell().setValue('Status:');
+  spreadsheet.getRange('G8:H8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A9').activate();
+  spreadsheet.getCurrentCell().setValue('Sexo:');
+  spreadsheet.getRange('A10:B10').activate();
+  spreadsheet.setCurrentCell(spreadsheet.getRange('B10'));
+  spreadsheet.getActiveRange().mergeAcross();
+  spreadsheet.getRange('D9').activate();
+  spreadsheet.getCurrentCell().setValue('Tipo de Atendimento:');
+  spreadsheet.getRange('D10:F10').activate()
+  .mergeAcross();
+  
+  //formatando o cabeçalho
+  spreadsheet.getRange('A1:I14').activate();
+  spreadsheet.getActiveRangeList().setBackground('#dd7e6b');
+  spreadsheet.getRange('A4:E4').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('A6:F6').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('A8:B8').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('G8:H8').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('D8:E8').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('A10:B10').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('D10:F10').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRangeList(['A3', 'A5', 'A7', 'A9', 'D9', 'D7', 'G7']).activate()
+  .setFontWeight('bold');
+  spreadsheet.getRange('G13').activate();
+  
+  //inserindo data no cabeçalho
+  spreadsheet.getRange('G3').activate();
+  spreadsheet.getCurrentCell().setValue('Data:');
+  spreadsheet.getRange('H3').activate();
+  spreadsheet.getCurrentCell().setValue('Hórario:');
+  spreadsheet.getRange('G3:H3').activate();
+  spreadsheet.getActiveRangeList().setFontWeight(null)
+  .setFontWeight('bold');
+  spreadsheet.getRange('G4').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('H4').activate();
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange("G4").setValue(new Date());
+  var minutos = new Date().getMinutes(); //problema de zero na frente dos minutos
+  if(minutos<10){
+  minutos = "0"+minutos;
+  }
+  var hora = new Date().getHours()-1; //problema de zero na frente das horas
+  if(hora<10){
+  hora = "0"+hora;
+  }
+  spreadsheet.getRange("H4").setValue(hora+":"+minutos );
+  
+  //limpar cabeçalho
+  spreadsheet.getRange("A4").clear();
+  spreadsheet.getRange("A6").clear();
+  spreadsheet.getRange("A8").clear();
+  spreadsheet.getRange("A10").clear();
+  spreadsheet.getRange("D8").clear();
+  spreadsheet.getRange("D10").clear();
+  spreadsheet.getRange("G8").clear();
+  spreadsheet.getRange("A13").clear();
+  spreadsheet.getRange("D13").clear();
+  
+  //profissional e especialidade
+  spreadsheet.getRange('A12').activate();
+  spreadsheet.getCurrentCell().setValue('Especialidade:');
+  spreadsheet.getRange('D12').activate();
+  spreadsheet.getCurrentCell().setValue('Profissional:');
+  spreadsheet.getRangeList(['A12', 'D12']).activate()
+  .setFontWeight('bold');
+  spreadsheet.getRange('A13:B13').activate();
+  spreadsheet.setCurrentCell(spreadsheet.getRange('B13'));
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('D13:G13').activate();
+  spreadsheet.setCurrentCell(spreadsheet.getRange('G13'));
+  spreadsheet.getActiveRangeList().setBackground('#ffffff');
+  spreadsheet.getRange('A13:B13').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D13:G13').activate()
+  .mergeAcross();
+  
+  //FAZENDO A LISTA SUSPENSA
+  spreadsheet.getRange('TelaInicial!A10:B10').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$F$2:$F$3'), true)
+  .build());
+ 
+  spreadsheet.getRange('TelaInicial!A13:B13').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$A$2:$A$11'), true)
+  .build());
+  
+  spreadsheet.getRange('TelaInicial!D13:G13').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$B$2:$B$32'), true)
+  .build());
+  
+  spreadsheet.getRange('TelaInicial!D10:F10').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$C$2:$C$3'), true)
+  .build());
+  
+  spreadsheet.getRange('TelaInicial!G8:H8').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$D$2:$D$3'), true)
+  .build());
+  
+  spreadsheet.getRange('TelaInicial!A6:F6').setDataValidation(SpreadsheetApp.newDataValidation()
+  .setAllowInvalid(false)
+  .requireValueInRange(spreadsheet.getRange('Extra!$E$2:$E$88'), true)
+  .build());
+   
+  //mesclando com a tela selecionada
+  spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A4:E4').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A6:F6').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A8:B8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D8:E8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('G8:H8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D10:F10').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A10:B10').activate()
+  .mergeAcross();
+};
+
+function BLimparCabecalho(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial")
+ //limpar cabeçalho
+  spreadsheet.getRange("A4").clear();
+  spreadsheet.getRange("A6").clear();
+  spreadsheet.getRange("A8").clear();
+  spreadsheet.getRange("A10").clear();
+  spreadsheet.getRange("D8").clear();
+  spreadsheet.getRange("D10").clear();
+  spreadsheet.getRange("G8").clear();
+  spreadsheet.getRange("A13").clear();
+  spreadsheet.getRange("D13").clear();
+  //inserindo data e hora atual
+  spreadsheet.getRange("G4").setValue(new Date());
+  var minutos = new Date().getMinutes(); //problema de zero na frente dos minutos
+  if(minutos<10){
+  minutos = "0"+minutos;
+  }
+  var hora = new Date().getHours()-1; //problema de zero na frente das horas
+  if(hora<10){
+  hora = "0"+hora;
+  }
+  spreadsheet.getRange("H4").setValue(hora+":"+minutos );
+  
+  //mesclando com a tela selecionada
+  spreadsheet = SpreadsheetApp.getActive();
+  spreadsheet.getRange('A4:E4').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A6:F6').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A8:B8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D8:E8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('G8:H8').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D10:F10').activate()
+  .mergeAcross();
+  spreadsheet.getRange('A10:B10').activate()
+  .mergeAcross();
+}
+
+function BSalvarRegistro(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial")
+  var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra")
+    spreadsheet2.getRange("G2").setValue(spreadsheet2.getRange("G2").getValue() + 1); //setando o id pra +1
+  var atendimento = {
+    id: spreadsheet2.getRange("G2").getValue(),
+    nome: spreadsheet.getRange("A4").getValue(),
+    curso: spreadsheet.getRange("A6").getValue(),
+    cpf: spreadsheet.getRange("A8").getValue(),
+    sexo: spreadsheet.getRange("A10").getValue(),
+    telefone: spreadsheet.getRange("D8").getValue(),
+    atendimento: spreadsheet.getRange("D10").getValue(),
+    especialidade: spreadsheet.getRange("A13").getValue(),
+    profissional: spreadsheet.getRange("D13").getValue(),
+    status: spreadsheet.getRange("G8").getValue(),
+    data: spreadsheet.getRange("G4").getValue(),
+    hora: spreadsheet.getRange("H4").getValue()
+  }
+  
+  ColocandoBD(atendimento,"BancoDados");
+  
+  if( atendimento["profissional"] == "Alba Valéria"){
+    ColocandoBD(atendimento,"BD Alba");
+  } else if (atendimento["profissional"] == "Rosana"){
+    ColocandoBD(atendimento,"BD Rosana");
+  } else if (atendimento["profissional"] == "Rógerio"){
+    ColocandoBD(atendimento,"BD Rogerio");
+  } else if (atendimento["profissional"] == "Bruno Severo"){
+    ColocandoBD(atendimento,"BD Bruno");
+  } else if (atendimento["profissional"] == "Alexandra Ramos dos Santos"){
+    ColocandoBD(atendimento,"BD AlexandraR");
+  } else if (atendimento["profissional"] == "Jônatas Felix da Silva"){
+    ColocandoBD(atendimento,"BD JonatasF");
+  } else if (atendimento["profissional"] == "Renata Nóbrega de Lucena"){
+    ColocandoBD(atendimento,"BD RenataN");
+  } else if (atendimento["profissional"] == "Andreia"){
+    ColocandoBD(atendimento,"BD Andreia");
+  } else if (atendimento["profissional"] == "Roberta Valesca Mota Santana"){
+    ColocandoBD(atendimento,"BD RobertaV");
+  } else if (atendimento["profissional"] == "Síria Silva Botelho"){
+    ColocandoBD(atendimento,"BD SiriaS");
+  } else if (atendimento["profissional"] == "Cássia Vilma Soares Frutuoso"){
+    ColocandoBD(atendimento,"BD CassiaV");
+  } else if (atendimento["profissional"] == "Inês Virgínia Aleixes da Cunha"){
+    ColocandoBD(atendimento,"BD InesV");
+  } else if (atendimento["profissional"] == "Johana de Angelis Cavalcanti de Morais"){
+    ColocandoBD(atendimento,"BD JohanaA");
+  } else if (atendimento["profissional"] == "Laura Carneiro Lacerda"){
+    ColocandoBD(atendimento,"BD LauraC");
+  } else if (atendimento["profissional"] == "Marcelani Renata Ferreira da Conceição"){
+    ColocandoBD(atendimento,"BD MarcelaniR");
+  } else if (atendimento["profissional"] == "Walewska Faria Alcantara Barreto"){
+    ColocandoBD(atendimento,"BD WalewskaF");
+  } else if (atendimento["profissional"] == "Alline de Souza Alves de Oliveira"){
+    ColocandoBD(atendimento,"BD AllineS");
+  } else if (atendimento["profissional"] == "Eduardo Andrada Pessoa de Figueiredo"){
+    ColocandoBD(atendimento,"BD EduardoA");
+  } else if (atendimento["profissional"] == "Luciana de França Cavalcanti"){
+    ColocandoBD(atendimento,"BD LucianaF");
+  } else if (atendimento["profissional"] == "Renata Maria Cavalcanti Lemos"){
+    ColocandoBD(atendimento,"BD RenataL");
+  } else if (atendimento["profissional"] == "Priscilla Santos"){
+    ColocandoBD(atendimento,"BD PriscillaS");
+  } else if (atendimento["profissional"] == "Silvana Anelisa Bezerra de Andrade de Souza"){
+    ColocandoBD(atendimento,"BD SilvanaA");
+  } else if (atendimento["profissional"] == "Tatiane de Moura Fontes Araújo"){
+    ColocandoBD(atendimento,"BD TatianeM");
+  } else if (atendimento["profissional"] == "Gustavo Barros Costa"){
+    ColocandoBD(atendimento,"BD GustavoB");
+  } else if (atendimento["profissional"] == "Jucele Gomes de Lemos"){
+    ColocandoBD(atendimento,"BD JuceleG");
+  } else if (atendimento["profissional"] == "Rebeka Carneiro Leão Machado"){
+    ColocandoBD(atendimento,"BD RebekaC");
+  } else if (atendimento["profissional"] == "Sâmid Danielle Costa de Oliveira Alves"){
+    ColocandoBD(atendimento,"BD SamidD");
+  } else if (atendimento["profissional"] == "Frederick Lapa Santos Filho"){
+    ColocandoBD(atendimento,"BD FrederickL");
+  } else if (atendimento["profissional"] == "Tiago Duraes Araújo"){
+    ColocandoBD(atendimento,"BD TiagoD");
+  } else if (atendimento["profissional"] == "Denise Valéria Oliveira Nunes"){
+    ColocandoBD(atendimento,"BD DeniseV");
+  } else if (atendimento["profissional"] == "Janaína Caetano dos Santos"){
+    ColocandoBD(atendimento,"BD JanainaC");
+  } 
+  
+  
+  
+}
+
+function CriandoBD() {
+  //CriandoBDNome("BancoDados");
+  CriandoBDNome('BD Alba');
+  //Logger.log(1);
+  CriandoBDNome('BD JanainaC');
+  //Logger.log(2);
+  CriandoBDNome('BD DeniseV');
+  //Logger.log(3);
+  CriandoBDNome('BD TiagoD');
+  //Logger.log(4);
+  CriandoBDNome('BD FrederickL');
+  //Logger.log(5);
+  CriandoBDNome('BD SamidD');
+  //Logger.log(6);
+  CriandoBDNome('BD RebekaC');
+  //Logger.log(7);
+  CriandoBDNome('BD JuceleG');
+  //Logger.log(8);
+  CriandoBDNome('BD GustavoB');
+  //Logger.log(9);
+  CriandoBDNome('BD TatianeM');
+  //Logger.log(10);
+  CriandoBDNome('BD SilvanaA');
+  //Logger.log(11);
+  CriandoBDNome('BD PriscillaS');
+  //Logger.log(12);
+  CriandoBDNome('BD RenataL');
+  //Logger.log(13);
+  CriandoBDNome('BD LucianaF');
+  //Logger.log(14);
+  CriandoBDNome('BD EduardoA');
+  //Logger.log(15);
+  CriandoBDNome('BD AllineS');
+  //Logger.log(16);
+  CriandoBDNome('BD WalewskaF');
+  //Logger.log(17);
+  CriandoBDNome('BD MarcelaniR');
+  //Logger.log(18);
+  CriandoBDNome('BD LauraC');
+  //Logger.log(19);
+  CriandoBDNome('BD JohanaA');
+  //Logger.log(20);
+  CriandoBDNome('BD InesV');
+  //Logger.log(21);
+  CriandoBDNome('BD Rosana');
+  //Logger.log(22);
+  CriandoBDNome('BD Rogerio');
+  //Logger.log(23);
+  CriandoBDNome('BD Bruno');
+  //Logger.log(24);
+  CriandoBDNome('BD AlexandraR');
+  //Logger.log(25);
+  CriandoBDNome('BD JonatasF');
+  //Logger.log(26);
+  CriandoBDNome('BD RenataN');
+  //Logger.log(27);
+  CriandoBDNome('BD Andreia');
+  //Logger.log(28);
+  CriandoBDNome('BD RobertaV');
+  //Logger.log(29);
+  CriandoBDNome('BD SiriaS');
+  //Logger.log(30);
+  CriandoBDNome('BD CassiaV');
+  //Logger.log(31);
+
+};
+
+function OrdenarDecrescente(Nome){
+   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(Nome);
+   var intervalo = spreadsheet.getRange("A"+"2:L"+spreadsheet.getLastRow()); //pega do começo ao fim do BD
+    intervalo.sort({
+    column:1,
+    ascending: false
+  });
+}
+
+function CriandoBDNome(Nome) {
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(Nome)
+  spreadsheet.getRange('A1').activate();
+  spreadsheet.getCurrentCell().setValue('ID');
+  spreadsheet.getRange('B1').activate();
+  spreadsheet.getCurrentCell().setValue('Nome');
+  spreadsheet.getRange('C1').activate();
+  spreadsheet.getCurrentCell().setValue('Curso');
+  spreadsheet.getRange('D1').activate();
+  spreadsheet.getCurrentCell().setValue('CPF');
+  spreadsheet.getRange('E1').activate();
+  spreadsheet.getCurrentCell().setValue('Telefone');
+  spreadsheet.getRange('F1').activate();
+  spreadsheet.getCurrentCell().setValue('Sexo');
+  spreadsheet.getRange('G1').activate();
+  spreadsheet.getCurrentCell().setValue('Atendimento');
+  spreadsheet.getRange('H1').activate();
+  spreadsheet.getCurrentCell().setValue('Status');
+  spreadsheet.getRange('I1').activate();
+  spreadsheet.getCurrentCell().setValue('Especialidade');
+  spreadsheet.getRange('J1').activate();
+  spreadsheet.getCurrentCell().setValue('Profissional');
+  spreadsheet.getRange('K1').activate();
+  spreadsheet.getCurrentCell().setValue('Data');
+  spreadsheet.getRange('L1').activate();
+  spreadsheet.getCurrentCell().setValue('Hora');
+  spreadsheet.getRange('A1:L1').activate();
+  spreadsheet.getActiveRangeList().setHorizontalAlignment('center')
+  .setFontWeight('bold')
+  .setBackground('#ffe599')
+  .setBorder(true, true, true, true, true, true, '#000000', SpreadsheetApp.BorderStyle.SOLID)
+  .setBorder(true, true, true, true, true, true, '#000000', SpreadsheetApp.BorderStyle.SOLID);
+};
+
+function ColocandoBD(atendimento,Nome){
+  var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(Nome)
+  var ultimalinha = spreadsheet3.getLastRow();
+  spreadsheet3.getRange(ultimalinha+1, 1).setValue(atendimento["id"]);
+  spreadsheet3.getRange(ultimalinha+1, 2).setValue(atendimento["nome"]);
+  spreadsheet3.getRange(ultimalinha+1, 3).setValue(atendimento["curso"]);
+  spreadsheet3.getRange(ultimalinha+1, 4).setValue(atendimento["cpf"]);
+  spreadsheet3.getRange(ultimalinha+1, 5).setValue(atendimento["telefone"]);
+  spreadsheet3.getRange(ultimalinha+1, 6).setValue(atendimento["sexo"]);
+  spreadsheet3.getRange(ultimalinha+1, 7).setValue(atendimento["atendimento"]);
+  spreadsheet3.getRange(ultimalinha+1, 8).setValue(atendimento["status"]);
+  spreadsheet3.getRange(ultimalinha+1, 9).setValue(atendimento["especialidade"]);
+  spreadsheet3.getRange(ultimalinha+1, 10).setValue(atendimento["profissional"]);
+  spreadsheet3.getRange(ultimalinha+1, 11).setValue(atendimento["data"]);
+  spreadsheet3.getRange(ultimalinha+1, 12).setValue(atendimento["hora"]);
+  OrdenarDecrescente(Nome);
+}
+
+function BBuscarAluno(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
+  var cpf = spreadsheet.getRange("A8").getValue();
+  var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
+  var encontrado = false; 
+  for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+    if(cpf == spreadsheet2.getRange("D"+i).getValue()){
+      encontrado = true;
+      spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue());
+      spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue());
+      spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue());
+      spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue());
+      break;
+    }
+  }
+  
+  if(!encontrado){
+      var ui = SpreadsheetApp.getUi();
+      ui.alert("Aluno não encontrado!")
+  }
+  
+}
+
+function BBuscarAgendamento(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
+  var cpf = spreadsheet.getRange("A8").getValue();
+  var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
+  var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
+  for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+    if ( cpf == spreadsheet2.getRange("D"+i).getValue()){
+      var teste = spreadsheet2.getRange("H"+i).getValue()
+     if(spreadsheet2.getRange("H"+i).getValue()!="Presença" || spreadsheet2.getRange("H"+i).getValue()!="Falta"){
+        
+        spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
+        spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
+        spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
+        spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
+        spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
+        var profissional = spreadsheet2.getRange("J"+i).getValue();
+        spreadsheet.getRange("D13").setValue(profissional); //profissional
+        spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
+        spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
+        spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
+        spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
+        break;
+      }
+    }
+  }
+    
+    //indice do BDIndividual
+    DescobrindoIndiceIndividualeSetando(profissional,cpf);
+  
+}
+
+function DescobrindoIndiceIndividualeSetando(profissional,cpf){
+  if( profissional == "Alba Valéria"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Alba");
+    var nome = "BD Alba";
+  } else if (profissional == "Rosana"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Rosana");
+    var nome = "BD Rosana";
+  } else if (profissional == "Rógerio"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Rogerio");
+    var nome = "BD Rogerio";
+  } else if (profissional == "Bruno Severo"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Bruno");
+    var nome = "BD Bruno";
+  } else if (profissional == "Alexandra Ramos dos Santos"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD AlexandraR");
+    var nome = "BD AlexandraR";
+  } else if (profissional == "Jônatas Felix da Silva"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD JonatasF");
+    var nome = "BD JonatasF";
+  } else if (profissional == "Renata Nóbrega de Lucena"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD RenataN");
+    var nome = "BD RenataN";
+  } else if (profissional == "Andreia"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Andreia");
+    var nome = "BD Andreia";
+  } else if (profissional == "Roberta Valesca Mota Santana"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD RobertaV");
+    var nome = "BD RobertaV";
+  } else if (profissional == "Síria Silva Botelho"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD SiriaS");
+    var nome = "BD SiriaS";
+  } else if (profissional == "Cássia Vilma Soares Frutuoso"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD CassiaV");
+    var nome = "BD CassiaV";
+  } else if (profissional == "Inês Virgínia Aleixes da Cunha"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD InesV");
+    var nome = "BD InesV";
+  } else if (profissional == "Johana de Angelis Cavalcanti de Morais"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD JohanaA");
+    var nome = "BD JohanaA";
+  } else if (profissional == "Laura Carneiro Lacerda"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD LauraC");
+    var nome = "BD LauraC";
+  } else if (profissional == "Marcelani Renata Ferreira da Conceição"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD MarcelaniR");
+    var nome = "BD MarcelaniR";
+  } else if (profissional == "Walewska Faria Alcantara Barreto"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD WalewskaF");
+    var nome = "BD WalewskaF";
+  } else if (profissional == "Alline de Souza Alves de Oliveira"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD AllineS");
+    var nome = "BD AllineS";
+  } else if (profissional == "Eduardo Andrada Pessoa de Figueiredo"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD EduardoA");
+    var nome = "BD EduardoA";
+  } else if (profissional == "Luciana de França Cavalcanti"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD LucianaF");
+    var nome = "BD LucianaF";
+  } else if (profissional == "Renata Maria Cavalcanti Lemos"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD RenataL");
+    var nome = "BD RenataL";
+  } else if (profissional == "Priscilla Santos"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD PriscillaS");
+    var nome = "BD PriscillaS";
+  } else if (profissional == "Silvana Anelisa Bezerra de Andrade de Souza"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD SilvanaA");
+    var nome = "BD SilvanaA";
+  } else if (profissional == "Tatiane de Moura Fontes Araújo"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD TatianeM");
+    var nome = "BD TatianeM";
+  } else if (profissional == "Gustavo Barros Costa"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD GustavoB");
+    var nome = "BD GustavoB";
+  } else if (profissional == "Jucele Gomes de Lemos"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD JuceleG");
+    var nome = "BD JuceleG";
+  } else if (profissional == "Rebeka Carneiro Leão Machado"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD RebekaC");
+    var nome = "BD RebekaC";
+  } else if (profissional == "Sâmid Danielle Costa de Oliveira Alves"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD SamidD");
+    var nome = "BD SamidD";
+  } else if (profissional == "Frederick Lapa Santos Filho"){
+   var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD FrederickL");
+   var nome = "BD FrederickL";
+  } else if (profissional == "Tiago Duraes Araújo"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD TiagoD");
+    var nome = "BD TiagoD";
+  } else if (profissional == "Denise Valéria Oliveira Nunes"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD DeniseV");
+    var nome = "BD DeniseV";
+  } else if (profissional == "Janaína Caetano dos Santos"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD JanainaC");
+    var nome = "BD JanainaC";
+  }
+  
+  var spreadsheet4 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
+  for(var z = 2; z<= spreadsheet3.getLastRow(); z++){
+    if ( cpf == spreadsheet3.getRange("D"+z).getValue()){
+     if(spreadsheet3.getRange("H"+z).getValue()!="Presença" || spreadsheet3.getRange("H"+z).getValue()!="Falta"){
+        spreadsheet4.getRange("G6").setValue(z);
+        spreadsheet4.getRange("G8").setValue(nome);
+        break;
+      }
+    }
+  }
+  
+}
+
+function BSalvarAgendamento(){
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
+  var IndicBDG = spreadsheet.getRange("G4").getValue();
+  var IndicBDI = spreadsheet.getRange("G6").getValue();
+  var profissional = spreadsheet.getRange("G8").getValue();
+  var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tela Inicial");
+  spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
+  spreadsheet.getRange("G"+IndicBDG).setValue(spreadsheet2.getRange("G8").getValue());
+  spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
+  spreadsheet.getRange("G"+IndicBDG).setValue(spreadsheet2.getRange("G8").getValue());
+  
+}
