@@ -158,6 +158,7 @@ function BNovoRegistro() {
   .mergeAcross();
 };
 
+/*
 function BLimparCabecalho(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial")
  //limpar cabeçalho
@@ -198,7 +199,12 @@ function BLimparCabecalho(){
   .mergeAcross();
   spreadsheet.getRange('A10:B10').activate()
   .mergeAcross();
+  spreadsheet.getRange('A13:B13').activate()
+  .mergeAcross();
+  spreadsheet.getRange('D13:G13').activate()
+  .mergeAcross();
 }
+*/
 
 function BSalvarRegistro(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial")
@@ -286,6 +292,9 @@ function BSalvarRegistro(){
   } 
   
   
+  
+  var ui = SpreadsheetApp.getUi();
+  ui.alert("Registro Realizado!")
   
 }
 
@@ -442,33 +451,46 @@ function BBuscarAluno(){
 
 function BBuscarAgendamento(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
+  
+  if(spreadsheet.getRange("A8").getValue()==""){
+    var ui = SpreadsheetApp.getUi();
+    ui.alert("Por favor, insira o CPF.")
+  } else {
+  var encontrou = false;  
   var cpf = spreadsheet.getRange("A8").getValue();
   var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
   var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
-  for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
-    if ( cpf == spreadsheet2.getRange("D"+i).getValue()){
-      var teste = spreadsheet2.getRange("H"+i).getValue()
-     if(spreadsheet2.getRange("H"+i).getValue()!="Presença" || spreadsheet2.getRange("H"+i).getValue()!="Falta"){
-        
-        spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
-        spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
-        spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
-        spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
-        spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
-        var profissional = spreadsheet2.getRange("J"+i).getValue();
-        spreadsheet.getRange("D13").setValue(profissional); //profissional
-        spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
-        spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
-        spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
-        spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
-        break;
+    for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+      if ( cpf == spreadsheet2.getRange("D"+i).getValue()){
+        var teste = spreadsheet2.getRange("H"+i).getValue()
+        if(spreadsheet2.getRange("H"+i).getValue()!="Presença" || spreadsheet2.getRange("H"+i).getValue()!="Falta"){
+          
+          spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
+          spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
+          spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
+          spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
+          spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
+          var profissional = spreadsheet2.getRange("J"+i).getValue();
+          spreadsheet.getRange("D13").setValue(profissional); //profissional
+          spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
+          spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
+          spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
+          spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
+          encontrou = true;
+          break;
+        }
       }
     }
-  }
     
-    //indice do BDIndividual
-    DescobrindoIndiceIndividualeSetando(profissional,cpf);
-  
+    if(!encontrou){
+      var ui = SpreadsheetApp.getUi();
+      ui.alert("Agendamento não encontrado!")
+    }else{
+      //indice do BDIndividual
+      DescobrindoIndiceIndividualeSetando(profissional,cpf);
+      
+    }
+  }
 }
 
 function DescobrindoIndiceIndividualeSetando(profissional,cpf){
@@ -581,14 +603,20 @@ function DescobrindoIndiceIndividualeSetando(profissional,cpf){
 }
 
 function BSalvarAgendamento(){
-  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
-  var IndicBDG = spreadsheet.getRange("G4").getValue();
-  var IndicBDI = spreadsheet.getRange("G6").getValue();
-  var profissional = spreadsheet.getRange("G8").getValue();
-  var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Tela Inicial");
-  spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
-  spreadsheet.getRange("G"+IndicBDG).setValue(spreadsheet2.getRange("G8").getValue());
-  spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
-  spreadsheet.getRange("G"+IndicBDG).setValue(spreadsheet2.getRange("G8").getValue());
+  var telainicial = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
+  var extra = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
+  var IndicBDG = extra.getRange("G4").getValue();
+  var IndicBDI = extra.getRange("G6").getValue();
+  var profissional = extra.getRange("G8").getValue();
+  var BDG = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
+  BDG.getRange("H"+IndicBDG).setValue(telainicial.getRange("G8").getValue());
+  var BDI = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
+  BDI.getRange("H"+IndicBDI).setValue(telainicial.getRange("G8").getValue());
+}
+
+function BConsultarCalendario(){
+  
   
 }
+
+
