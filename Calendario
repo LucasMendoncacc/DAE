@@ -226,7 +226,9 @@ function BSalvarRegistro(){
   }
   
   ColocandoBD(atendimento,"BancoDados");
+  OrdenarDecrescente("BancoDados");
   
+  /*
   if( atendimento["profissional"] == "Alba Valéria"){
     ColocandoBD(atendimento,"BD Alba");
   } else if (atendimento["profissional"] == "Rosana"){
@@ -255,8 +257,8 @@ function BSalvarRegistro(){
     ColocandoBD(atendimento,"BD JohanaA");
   } else if (atendimento["profissional"] == "Laura Carneiro Lacerda"){
     ColocandoBD(atendimento,"BD LauraC");
-  } else if (atendimento["profissional"] == "Marcelani Renata Ferreira da Conceição"){
-    ColocandoBD(atendimento,"BD MarcelaniR");
+  } else if (atendimento["profissional"] == "macelani Renata Ferreira da Conceição"){
+    ColocandoBD(atendimento,"BD macelaniR");
   } else if (atendimento["profissional"] == "Walewska Faria Alcantara Barreto"){
     ColocandoBD(atendimento,"BD WalewskaF");
   } else if (atendimento["profissional"] == "Alline de Souza Alves de Oliveira"){
@@ -290,8 +292,7 @@ function BSalvarRegistro(){
   } else if (atendimento["profissional"] == "Janaína Caetano dos Santos"){
     ColocandoBD(atendimento,"BD JanainaC");
   } 
-  
-  
+  */
   
   var ui = SpreadsheetApp.getUi();
   ui.alert("Registro Realizado!")
@@ -334,7 +335,7 @@ function CriandoBD() {
   //Logger.log(16);
   CriandoBDNome('BD WalewskaF');
   //Logger.log(17);
-  CriandoBDNome('BD MarcelaniR');
+  CriandoBDNome('BD macelaniR');
   //Logger.log(18);
   CriandoBDNome('BD LauraC');
   //Logger.log(19);
@@ -423,28 +424,45 @@ function ColocandoBD(atendimento,Nome){
   spreadsheet3.getRange(ultimalinha+1, 10).setValue(atendimento["profissional"]);
   spreadsheet3.getRange(ultimalinha+1, 11).setValue(atendimento["data"]);
   spreadsheet3.getRange(ultimalinha+1, 12).setValue(atendimento["hora"]);
-  OrdenarDecrescente(Nome);
+  //OrdenarDecrescente(Nome);
 }
 
 function BBuscarAluno(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
   var cpf = spreadsheet.getRange("A8").getValue();
+  var nome = spreadsheet.getRange("A4").getValue();
   var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
-  var encontrado = false; 
-  for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
-    if(cpf == spreadsheet2.getRange("D"+i).getValue()){
-      encontrado = true;
-      spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue());
-      spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue());
-      spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue());
-      spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue());
-      break;
+  var encontrado = false;
+  if(cpf != ''){
+    for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+      if(cpf == spreadsheet2.getRange("D"+i).getValue() ){
+        encontrado = true;
+        spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue());
+        spreadsheet.getRange("A8").setValue(spreadsheet2.getRange("D"+i).getValue());
+        spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue());
+        spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue());
+        spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue());
+        break;
+      }
+    }
+  }else if(nome != ''){
+    for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+      if(nome == spreadsheet2.getRange("B"+i).getValue() ){
+        encontrado = true;
+        spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue());
+        spreadsheet.getRange("A8").setValue(spreadsheet2.getRange("D"+i).getValue());
+        spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue());
+        spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue());
+        spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue());
+        break;
+      }
     }
   }
   
+  
   if(!encontrado){
       var ui = SpreadsheetApp.getUi();
-      ui.alert("Aluno não encontrado!")
+      ui.alert("Aluno não encontrado ou CPF/NOME não inserido.")
   }
   
 }
@@ -452,35 +470,63 @@ function BBuscarAluno(){
 function BBuscarAgendamento(){
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
   
-  if(spreadsheet.getRange("A8").getValue()==""){
+  if(spreadsheet.getRange("A8").getValue()=="" && spreadsheet.getRange("A4").getValue()==""){
     var ui = SpreadsheetApp.getUi();
-    ui.alert("Por favor, insira o CPF.")
+    ui.alert("Por favor, insira o CPF ou Nome corretamente ou válidos.")
   } else {
   var encontrou = false;  
   var cpf = spreadsheet.getRange("A8").getValue();
+  var nome = spreadsheet.getRange("A4").getValue();
   var spreadsheet2 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
   var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
-    for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
-      if ( cpf == spreadsheet2.getRange("D"+i).getValue()){
-        var teste = spreadsheet2.getRange("H"+i).getValue()
-        if(spreadsheet2.getRange("H"+i).getValue()!="Presença" || spreadsheet2.getRange("H"+i).getValue()!="Falta"){
-          
-          spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
-          spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
-          spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
-          spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
-          spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
-          var profissional = spreadsheet2.getRange("J"+i).getValue();
-          spreadsheet.getRange("D13").setValue(profissional); //profissional
-          spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
-          spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
-          spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
-          spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
-          encontrou = true;
-          break;
+    
+    
+    if(cpf!=''){
+      for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+        if (cpf == spreadsheet2.getRange("D"+i).getValue()){  
+          if(spreadsheet2.getRange("H"+i).getValue() == "" ){
+            spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
+            spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
+            spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
+            spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
+            spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
+            spreadsheet.getRange("A8").setValue(spreadsheet2.getRange("D"+i).getValue()); // CPF
+            var profissional = spreadsheet2.getRange("J"+i).getValue();
+            spreadsheet.getRange("D13").setValue(profissional); //profissional
+            spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
+            spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
+            spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
+            spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
+            //spreadsheet3.getRange("G6").setValue(spreadsheet2.getRange("A"+i).getValue());                         AQUI
+            encontrou = true;
+            break;
+          }
+        }
+      }
+    } else if(nome!=''){
+     for(var i = 2; i<= spreadsheet2.getLastRow(); i++){
+        if (nome == spreadsheet2.getRange("B"+i).getValue()){  
+          if(spreadsheet2.getRange("H"+i).getValue() == "" ){
+            spreadsheet.getRange("A4").setValue(spreadsheet2.getRange("B"+i).getValue()); //nome
+            spreadsheet.getRange("A6").setValue(spreadsheet2.getRange("C"+i).getValue()); //curso
+            spreadsheet.getRange("A10").setValue(spreadsheet2.getRange("F"+i).getValue()); //sexo
+            spreadsheet.getRange("D8").setValue(spreadsheet2.getRange("E"+i).getValue()); //telefone
+            spreadsheet.getRange("A13").setValue(spreadsheet2.getRange("I"+i).getValue()); //especialidade
+            spreadsheet.getRange("A8").setValue(spreadsheet2.getRange("D"+i).getValue()); // CPF
+            var profissional = spreadsheet2.getRange("J"+i).getValue();
+            spreadsheet.getRange("D13").setValue(profissional); //profissional
+            spreadsheet.getRange("D10").setValue(spreadsheet2.getRange("G"+i).getValue()); //atendimento
+            spreadsheet.getRange("G4").setValue(spreadsheet2.getRange("K"+i).getValue()); //data 
+            spreadsheet.getRange("H4").setValue(spreadsheet2.getRange("L"+i).getValue()); //hora
+            spreadsheet3.getRange("G4").setValue(i); //indice no BDGeral
+            //spreadsheet3.getRange("G6").setValue(spreadsheet2.getRange("A"+i).getValue());                         AQUI
+            encontrou = true;
+            break;
+          }
         }
       }
     }
+    
     
     if(!encontrou){
       var ui = SpreadsheetApp.getUi();
@@ -491,6 +537,16 @@ function BBuscarAgendamento(){
       
     }
   }
+  spreadsheet.getRange("G4").setValue(new Date());
+  var minutos = new Date().getMinutes(); //problema de zero na frente dos minutos
+  if(minutos<10){
+  minutos = "0"+minutos;
+  }
+  var hora = new Date().getHours()-1; //problema de zero na frente das horas
+  if(hora<10){
+  hora = "0"+hora;
+  }
+  spreadsheet.getRange("H4").setValue(hora+":"+minutos );
 }
 
 function DescobrindoIndiceIndividualeSetando(profissional,cpf){
@@ -536,9 +592,9 @@ function DescobrindoIndiceIndividualeSetando(profissional,cpf){
   } else if (profissional == "Laura Carneiro Lacerda"){
     var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD LauraC");
     var nome = "BD LauraC";
-  } else if (profissional == "Marcelani Renata Ferreira da Conceição"){
-    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD MarcelaniR");
-    var nome = "BD MarcelaniR";
+  } else if (profissional == "macelani Renata Ferreira da Conceição"){
+    var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD macelaniR");
+    var nome = "BD macelaniR";
   } else if (profissional == "Walewska Faria Alcantara Barreto"){
     var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD WalewskaF");
     var nome = "BD WalewskaF";
@@ -592,7 +648,7 @@ function DescobrindoIndiceIndividualeSetando(profissional,cpf){
   var spreadsheet4 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
   for(var z = 2; z<= spreadsheet3.getLastRow(); z++){
     if ( cpf == spreadsheet3.getRange("D"+z).getValue()){
-     if(spreadsheet3.getRange("H"+z).getValue()!="Presença" || spreadsheet3.getRange("H"+z).getValue()!="Falta"){
+     if(spreadsheet3.getRange("H"+z).getValue() == ""){
         spreadsheet4.getRange("G6").setValue(z);
         spreadsheet4.getRange("G8").setValue(nome);
         break;
@@ -610,13 +666,12 @@ function BSalvarAgendamento(){
   var profissional = extra.getRange("G8").getValue();
   var BDG = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
   BDG.getRange("H"+IndicBDG).setValue(telainicial.getRange("G8").getValue());
+  BDG.getRange("K"+IndicBDG).setValue(telainicial.getRange("G4").getValue());
+  BDG.getRange("L"+IndicBDG).setValue(telainicial.getRange("H4").getValue());
+  
   var BDI = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
   BDI.getRange("H"+IndicBDI).setValue(telainicial.getRange("G8").getValue());
+  BDI.getRange("K"+IndicBDI).setValue(telainicial.getRange("G4").getValue());
+  BDI.getRange("L"+IndicBDI).setValue(telainicial.getRange("H4").getValue());
 }
-
-function BConsultarCalendario(){
-  
-  
-}
-
 
