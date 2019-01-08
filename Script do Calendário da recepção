@@ -531,10 +531,6 @@ function BBuscarAgendamento(){
     if(!encontrou){
       var ui = SpreadsheetApp.getUi();
       ui.alert("Agendamento não encontrado!")
-    }else{
-      //indice do BDIndividual
-      DescobrindoIndiceIndividualeSetando(profissional,cpf);
-      
     }
   }
   spreadsheet.getRange("G4").setValue(new Date());
@@ -549,6 +545,7 @@ function BBuscarAgendamento(){
   spreadsheet.getRange("H4").setValue(hora+":"+minutos );
 }
 
+/*
 function DescobrindoIndiceIndividualeSetando(profissional,cpf){
   if( profissional == "Alba Valéria"){
     var spreadsheet3 = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BD Alba");
@@ -657,21 +654,23 @@ function DescobrindoIndiceIndividualeSetando(profissional,cpf){
   }
   
 }
+*/
 
 function BSalvarAgendamento(){
   var telainicial = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("TelaInicial");
   var extra = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Extra");
   var IndicBDG = extra.getRange("G4").getValue();
-  var IndicBDI = extra.getRange("G6").getValue();
-  var profissional = extra.getRange("G8").getValue();
+  //var IndicBDI = extra.getRange("G6").getValue();
+  //var profissional = extra.getRange("G8").getValue();
   var BDG = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("BancoDados");
   BDG.getRange("H"+IndicBDG).setValue(telainicial.getRange("G8").getValue());
   BDG.getRange("K"+IndicBDG).setValue(telainicial.getRange("G4").getValue());
   BDG.getRange("L"+IndicBDG).setValue(telainicial.getRange("H4").getValue());
   
-  var BDI = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
-  BDI.getRange("H"+IndicBDI).setValue(telainicial.getRange("G8").getValue());
-  BDI.getRange("K"+IndicBDI).setValue(telainicial.getRange("G4").getValue());
-  BDI.getRange("L"+IndicBDI).setValue(telainicial.getRange("H4").getValue());
+  //var BDI = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(profissional);
+  //BDI.getRange("H"+IndicBDI).setValue(telainicial.getRange("G8").getValue());
+  //BDI.getRange("K"+IndicBDI).setValue(telainicial.getRange("G4").getValue());
+  //BDI.getRange("L"+IndicBDI).setValue(telainicial.getRange("H4").getValue());
 }
+
 
