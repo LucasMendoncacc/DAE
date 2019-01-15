@@ -1,0 +1,109 @@
+function Relatorio (){
+  //parte que envolve pegar os dados da planilha
+  var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("RELATORIO")
+  var nome = spreadsheet.getRange("B1").getValue();
+  var mes = spreadsheet.getRange("B2").getValue();
+  var Qatendimentos = spreadsheet.getRange("B4").getValue();
+  var Qfaltas = spreadsheet.getRange("B5").getValue();
+  var Pfaltas = spreadsheet.getRange("B6").getValue();
+  var Qagendamento = spreadsheet.getRange("B8").getValue();
+  var Qdemanda = spreadsheet.getRange("B9").getValue();
+  var Vatendimento;
+  var Tatendimento;
+  if (Qagendamento > Qdemanda) {
+    Tatendimento = "a maior parte dos atendimentos foi por Agendamento";
+    Vatendimento = "Agendamento";
+  }else if (Qagendamento == Qdemanda){
+    Tatendimento = "a quantidade de atendimento de Demanda Espontânea e Agendamento foram iguais";
+    Vatendimento = "Agendamento e Demanda Espontânea";
+  } else {
+    Tatendimento = "a maior parte dos atendimentos foi por Demanda Espontânea";
+    Vatendimento = "Demanda Espontânea";
+  }
+  var Patendimento = spreadsheet.getRange("B10").getValue();
+  var Qfeminino = spreadsheet.getRange("B12").getValue();
+  var Qmasculino = spreadsheet.getRange("B13").getValue();
+  var Vsexo;
+  var Tsexo;
+  if (Qfeminino > Qmasculino){
+    Vsexo = "feminino";
+    Tsexo = "o sexo feminino";
+  } else if ( Qfeminino < Qmasculino){
+    Vsexo = "masculino";
+    Tsexo = "o sexo masculino";
+  } else {
+    Vsexo = "masculino e feminino";
+    Tsexo = "e ambos o sexo";
+  }
+  var Psexo = spreadsheet.getRange("B14").getValue();
+  var Curso1 = spreadsheet.getRange("B17").getValue();
+  var Pcurso1 = spreadsheet.getRange("C17").getValue();
+  var Curso2 = spreadsheet.getRange("B18").getValue();
+  var Pcurso2 = spreadsheet.getRange("C18").getValue();
+  var Curso3 = spreadsheet.getRange("B19").getValue();
+  var Pcurso3 = spreadsheet.getRange("C19").getValue();
+  var Curso4 = spreadsheet.getRange("B20").getValue();
+  var Pcurso4 = spreadsheet.getRange("C20").getValue();
+  var Curso5 = spreadsheet.getRange("B21").getValue();
+  var Pcurso5 = spreadsheet.getRange("C21").getValue();
+  //fim da parte que envolve a planilha
+  
+  
+  
+  var doc = DocumentApp.create('Relatório do Profissional ' + nome + ' do mês de ' + mes);
+  var body = doc.getBody();
+  //cabeçalho folha 1
+  var linha1 = body.appendParagraph("Relatório de Atendimentos");
+  linha1.editAsText().setBold(0, 24, true)
+  linha1.editAsText().setFontSize(0, 24, 11)
+  linha1.setAlignment(DocumentApp.HorizontalAlignment.LEFT)	
+  var linha2 = body.appendParagraph("DAE");
+  linha2.editAsText().setBold(0,2,true)
+  linha2.editAsText().setFontSize(0, 2, 72)
+  linha2.setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
+  var linha3 = body.appendParagraph("NASE - Núcleo de Atenção à Saúde do Estudante");
+  linha3.editAsText().setBold(0,44,true)
+  linha3.editAsText().setFontSize(0, 44, 12)
+  linha3.setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
+  var linha4 = body.appendParagraph("NAEST - Núcleo de Assistência ao Estudante");
+  linha4.editAsText().setBold(0,41,true)
+  linha4.editAsText().setFontSize(0, 41, 12)
+  linha4.setAlignment(DocumentApp.HorizontalAlignment.RIGHT)
+  linha4.appendPageBreak()
+  //folha2
+  var linha5 = body.appendParagraph("Introdução")
+  linha5.editAsText().setBold(0,9,true)
+  linha5.editAsText().setFontSize(0, 9, 16)
+  linha5.setAlignment(DocumentApp.HorizontalAlignment.LEFT)
+  var linha6 = body.appendParagraph("       O presente relatório traz um resumo dos registros de atendimentos realizados no Núcleo de Atenção à Saúde do Estudante. Os atendimentos se baseiam nos registros específicos realizados pela recepção do NASE durante o mês de {mês} de 2019 acerca do profissional {profissional}.")
+  linha6.editAsText().setFontSize(0, 281, 12) //numero de caracter incerto
+  linha6.setAlignment(DocumentApp.HorizontalAlignment.JUSTIFY)
+  linha6.replaceText("{profissional}", nome)
+  linha6.replaceText("{mês}", mes)
+  linha6.appendPageBreak()
+  //folha3
+  var linha7 = body.appendParagraph("Atendimentos Específicos")
+  linha7.editAsText().setBold(0,23,true)
+  linha7.editAsText().setFontSize(0, 23, 16)
+  linha7.setAlignment(DocumentApp.HorizontalAlignment.LEFT)
+  var linha8 = body.appendParagraph("       Foi realizado um total de {Qatendimentos} atendimentos durante o mês de {mês} nos quais houve {Qfaltas} faltas ({Pfaltas}% de faltas) e {Tatendimento} ({Patendimento}% de {Vatendimento}). Foi realizado mais atendimentos de pessoas d{Tsexo} ({Psexo}% de pessoas do sexo {Vsexo}), e os 5 principais cursos atendidos foram:")
+  linha8.editAsText().setFontSize(0, 326, 12) //numero de caracter incerto
+  linha8.setAlignment(DocumentApp.HorizontalAlignment.JUSTIFY)
+  linha8.replaceText("{Qatendimentos}", Qatendimentos)
+  linha8.replaceText("{mês}", mes)
+  linha8.replaceText("{Qfaltas}", Qfaltas)
+  linha8.replaceText("{Pfaltas}", Pfaltas)
+  linha8.replaceText("{Tatendimento}", Tatendimento)
+  linha8.replaceText("{Patendimento}", Patendimento)
+  linha8.replaceText("{Vatendimento}", Vatendimento)
+  linha8.replaceText("{Tsexo}", Tsexo)
+  linha8.replaceText("{Psexo}", Psexo)
+  linha8.replaceText("{Vsexo}", Vsexo)
+  var linha9 = body.appendParagraph(Curso1 + " (representando " + Pcurso1 + "% dos atendimentos.)")
+  var linha10 = body.appendParagraph(Curso2 + " (representando " + Pcurso2 + "% dos atendimentos.)")
+  var linha11 = body.appendParagraph(Curso3 + " (representando " + Pcurso3 + "% dos atendimentos.)")
+  var linha12 = body.appendParagraph(Curso4 + " (representando " + Pcurso4 + "% dos atendimentos.)")
+  var linha13 = body.appendParagraph(Curso5 + " (representando " + Pcurso5 + "% dos atendimentos.)")
+}
+
+
